@@ -13,6 +13,7 @@ interface ImagesQueryResponse {
       title: string;
       description: string;
       url: string;
+      // eslint-disable-next-line prettier/prettier
     };
     ts: number;
     ref: {
@@ -49,10 +50,11 @@ export default async function handler(
   }
 
   if (req.method === 'GET') {
+    console.log(process.env.FAUNA_API_KEY)
     const { after } = req.query;
-
+    console.log(after);
     const queryOptions = {
-      size: 6,
+      size: 1,
       ...(after && { after: query.Ref(query.Collection('images'), after) }),
     };
 
@@ -79,6 +81,7 @@ export default async function handler(
         });
       })
       .catch(err => {
+        console.log(err);
         return res.status(400).json(err);
       });
   }
