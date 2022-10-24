@@ -67,9 +67,10 @@ const FileInputBase: ForwardRefRenderFunction<
   const [cancelToken, setCancelToken] = useState<CancelTokenSource>(
     {} as CancelTokenSource
   );
-
+  
   const handleImageUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+      console.log(event.target.files)
       if (!event.target.files?.length) {
         return;
       }

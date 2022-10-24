@@ -26,9 +26,6 @@ type imagesResult = {
 }
 export default function Home(): JSX.Element {
  
-  function getImages(pageParam){
-   
-  }
 
   const {
     data,
@@ -39,12 +36,12 @@ export default function Home(): JSX.Element {
     hasNextPage,
   } = useInfiniteQuery(
     'images', async ({ pageParam = null}) => { 
-      const response = await api.get(`/images`, {
+      const response = await api.get('/api/images', {
         params: {
           after: pageParam,
         },
       })
-     console.log(response.data);
+
       return response.data;
     },
     {
@@ -59,30 +56,27 @@ export default function Home(): JSX.Element {
     }
   );
 
-  const formattedData = useMemo((): image[]  => {
-     if(data){
-      const arrayCompletImages = data.pages.map(page => {
+  const formattedData = useMemo(()  => {
+      const arrayCompletImages = data?.pages.map(page => {
         return page.data;
-      })
+      }).flat()
 
-      return arrayCompletImages.flat();
+      return arrayCompletImages || [];
      }
       
-    
-    return [];
-  
-    }
    , [data]);
-
-  // TODO RENDER LOADING SCREEN
-
-  // TODO RENDER ERROR SCREEN
 
   return (
     <>
-    {(!isLoading) 
-      ? (
-          <>
+    {(isLoading) 
+      ? (<Flex w="full" h="full" justify="center" align="center">
+          <Loading />
+        </Flex>)
+      
+      : isError
+      ? (<Error />) 
+      :
+      (<>
           <Header />
           <Box maxW={1120} px={20} mx="auto" my={20}>
             <CardList cards={formattedData} />
@@ -94,11 +88,8 @@ export default function Home(): JSX.Element {
           </Box>
           </>
         ) 
-      : isError 
-      ? (<Error />) 
-      : (<Flex w="full" h="full" justify="center" align="center">
-      <Loading />
-    </Flex>)}
+
+        }
     </>
   );
 }

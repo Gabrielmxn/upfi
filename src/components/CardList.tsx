@@ -23,23 +23,18 @@ export function CardList({ cards }: CardsProps): JSX.Element {
   // TODO SELECTED IMAGE URL STATE
 
   // TODO FUNCTION HANDLE VIEW IMAGE
-  function viewImage(url: string){
+  function handleViewImage(url: string){
     console.log(url);
     onOpen();
     setImageUrl(url);
   }
   return (
     <>
-     <Grid gap={10} templateColumns='repeat(3, 1fr)'>
+     <SimpleGrid gap={10} templateColumns='repeat(3, 1fr)'>
       {cards.map((card) => {
-        return  <Card viewImage={viewImage} key={card.id} data={{
-          description: card.description,
-          title: card.title,
-          ts: card.ts,
-          url: card.url
-        }} />
+        return  <Card viewImage={handleViewImage} key={card.id} data={card} />
       })}
-     </Grid>
+     </SimpleGrid>
 
       <ModalViewImage  isOpen={isOpen} onClose={onClose} imgUrl={imageUrl}/>
     </>
