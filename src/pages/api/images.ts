@@ -50,9 +50,7 @@ export default async function handler(
   }
 
   if (req.method === 'GET') {
-    console.log(process.env.FAUNA_API_KEY)
     const { after } = req.query;
-    console.log(after);
     const queryOptions = {
       size: 6,
       ...(after && { after: query.Ref(query.Collection('images'), after) }),
